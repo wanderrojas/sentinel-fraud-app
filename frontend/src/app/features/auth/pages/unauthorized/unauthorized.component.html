@@ -1,0 +1,24 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+    <div class="mb-6">
+      <img style="width: 400px" src="img/session-expired.svg" alt="" />
+    </div>
+
+    <h1 class="text-xl font-semibold text-gray-800 mb-4">
+      Usuario no autenticado o no tiene permisos para utilizar este módulo.
+    </h1>
+
+    <p class="text-gray-600 mb-6">
+      El token de autenticación ha expirado o ya fue utilizado. Por favor,
+      vuelve a autenticarte.
+    </p>
+    <p-button
+      type="button"
+      pRipple
+      (click)="gotToHome()"
+      label="Inicia sesión nuevamente para continuar"
+      icon="pi pi-sign-out"
+      severity="info"
+    />
+  </div>
+</div>

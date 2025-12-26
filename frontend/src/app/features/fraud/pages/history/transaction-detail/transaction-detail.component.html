@@ -1,0 +1,252 @@
+<div class="process-analyze card grid gap-0 mb-5">
+  <div class="col-12 lg:col-9">
+    <div>
+      <p-accordion [(value)]="activeIndex">
+        <p-accordion-panel value="0">
+          <p-accordion-header>
+            <ng-template #toggleicon let-active="active">
+              @if (active) {
+              <i class="pi pi-minus"></i>
+              } @else {
+              <i class="pi pi-plus"></i>
+              }
+            </ng-template>
+            <span class="flex items-center gap-2 w-full">
+              <p-avatar
+                image="https://cdn-icons-png.flaticon.com/512/11096/11096782.png
+"
+                shape="circle"
+              />
+              <span class="font-bold whitespace-nowrap"
+                >Logs durante la transacción</span
+              >
+            </span>
+          </p-accordion-header>
+          <p-accordion-content>
+            <div class="logs-chat p-4" #logsContainer>
+              <div
+                *ngFor="let log of transaction?.analysis_logs"
+                class="log-message"
+                [ngClass]="{
+                  'phase-title': log.event_type === 'phase',
+                  'log-detail':
+                    log.event_type === 'info' || log.event_type === 'success',
+                  'log-complete': log.event_type === 'complete'
+                }"
+                [ngStyle]="{
+                  'border-left-color': getLogColor(log.event_type)
+                }"
+              >
+                <i [class]="getLogIcon(log.event_type)"></i>
+                <div class="log-text">
+                  <div class="message">{{ log.message }}</div>
+                  <div class="timestamp">
+                    {{
+                      log.timestamp ? (log.timestamp | date : "shortTime") : ""
+                    }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="1">
+          <p-accordion-header>
+            <ng-template #toggleicon let-active="active">
+              @if (active) {
+              <i class="pi pi-minus"></i>
+              } @else {
+              <i class="pi pi-plus"></i>
+              }
+            </ng-template>
+            <span class="flex items-center gap-2 w-full">
+              <p-avatar
+                image="https://cdn-icons-png.flaticon.com/512/18476/18476440.png"
+                shape="circle"
+              />
+              <span class="font-bold whitespace-nowrap"
+                >Resultado del análisis</span
+              >
+            </span>
+          </p-accordion-header>
+          <p-accordion-content>
+            @if (transaction) {
+            <div class="col-12 lg:col-12 pd-4">
+              <div class="card">
+                <!-- Decisión Principal -->
+                <div
+                  class="mb-4 p-4 border-round"
+                  [ngClass]="getResultClass(transaction.decision)"
+                >
+                  <div
+                    class="flex align-items-center justify-content-between mb-2"
+                  >
+                    <span class="text-xl font-bold">Decisión:</span>
+                    <p-tag
+                      [value]="transaction.decision"
+                      [severity]="getDecisionSeverity(transaction.decision)"
+                      styleClass="text-xl px-4 py-2"
+                    >
+                    </p-tag>
+                  </div>
+                  <div class="flex align-items-center justify-content-between">
+                    <span class="font-semibold">Confianza:</span>
+                    <span class="text-2xl font-bold"
+                      >{{ (transaction.confidence * 100).toFixed(0) }}%</span
+                    >
+                  </div>
+
+                  <hr style="border: solid 1px #e1dddd" />
+
+                  <div
+                    class="flex align-items-center justify-content-between mt-3"
+                  >
+                    <span class="text-lg font-bold">{{
+                      transaction.explanation_customer
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Señales Detectadas -->
+                <div class="mb-4">
+                  <h3 class="text-xl font-bold mb-3">
+                    🚨 Señales Detectadas ({{ transaction.signals.length }})
+                  </h3>
+                  <div class="flex flex-column gap-2">
+                    <div
+                      *ngFor="let signal of transaction.signals"
+                      class="p-3 surface-100 border-round border-left-3 border-orange-500"
+                    >
+                      <i
+                        class="pi pi-exclamation-triangle text-orange-500 mr-2"
+                      ></i>
+                      {{ signal }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Citaciones -->
+                <div
+                  class="mb-4"
+                  *ngIf="
+                    transaction.citations_internal &&
+                    transaction.citations_internal.length > 0
+                  "
+                >
+                  <h3 class="text-xl font-bold mb-3">📚 Políticas Aplicadas</h3>
+                  <div class="flex flex-column gap-2">
+                    <div
+                      *ngFor="let citation of transaction.citations_internal"
+                      class="p-3 surface-100 border-round"
+                    >
+                      <i class="pi pi-book text-blue-500 mr-2"></i>
+                      <span class="font-semibold">{{
+                        citation.policy_id
+                      }}</span>
+                      <span class="text-sm text-color-secondary ml-2"
+                        >(v{{ citation.version }})</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- External -->
+                <div
+                  class="mb-4"
+                  *ngIf="
+                    transaction.citations_external &&
+                    transaction.citations_external.length > 0
+                  "
+                >
+                  <h3 class="text-xl font-bold mb-3">
+                    📚 Reportes recientes de fraude
+                  </h3>
+                  <div class="flex flex-column gap-2">
+                    <div
+                      *ngFor="let extern of transaction.citations_external"
+                      class="p-3 surface-100 border-round"
+                    >
+                      <i class="pi pi-book text-blue-500 mr-2"></i>
+                      <span class="font-semibold">{{ extern.summary }}</span>
+                      <span class="text-sm text-color-secondary ml-2"
+                        >({{ extern.url }})</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ruta de Agentes -->
+                <div class="mb-4">
+                  <h3 class="text-xl font-bold mb-3">🤖 Ruta de Agentes</h3>
+                  <div
+                    class="p-3 surface-100 border-round font-monospace text-sm"
+                  >
+                    <!--   {{ transaction.agent_route }} -->
+
+                    <div class="flex flex-wrap gap-2 align-items-center">
+                      <ng-container
+                        *ngFor="
+                          let agent of transaction.agent_route;
+                          let last = last
+                        "
+                      >
+                        <p-tag [value]="agent" severity="info"></p-tag>
+                        <!--  <span *ngIf="!last" class="px-1 text-gray-500">→</span> -->
+
+                        <i *ngIf="!last" class="pi pi-arrow-right"></i>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tiempo de Procesamiento -->
+                <div class="flex align-items-center gap-2 text-color-secondary">
+                  <i class="pi pi-clock"></i>
+                  <span
+                    >Tiempo de procesamiento:
+                    {{
+                      (transaction.processing_time_ms / 1000).toFixed(2)
+                    }}s</span
+                  >
+                </div>
+              </div>
+            </div>
+            }
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-3">
+    <p-card header="Datos de la Transacción">
+      <p-dataView [value]="[transaction]" layout="list">
+        <ng-template #list let-items>
+          <div *ngFor="let tx of items" class="grid gap-2 mt-3">
+            <div class="col-12"><b>ID:</b> {{ tx?.transaction_id }}</div>
+            <div class="col-12">
+              <b>Cliente:</b> {{ tx?.customer?.nombre }}
+              {{ tx?.customer.apellido }}
+            </div>
+            <div class="col-12">
+              <b>Monto:</b> {{ tx?.transaction?.amount }}
+              {{ tx?.transaction.currency }}
+            </div>
+            <div class="col-12">
+              <b class="mr-2">País:</b>
+              <p-tag value="{{ tx?.country?.name }}"></p-tag>
+            </div>
+            <div class="col-12">
+              <b>Dispositivo:</b> {{ tx?.transaction?.device_id }}
+            </div>
+            <div class="col-12"><b>Canal:</b> {{ tx?.channel?.name }}</div>
+            <div class="col-12">
+              <b>Fecha:</b>
+              {{ tx?.transaction?.transaction_timestamp | date : "medium" }}
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </p-card>
+  </div>
+</div>

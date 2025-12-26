@@ -1,0 +1,22 @@
+.app-body {
+  min-height: calc(96vh - 60px);
+  padding: 1.5rem;
+  background-color: var(--surface-ground);
+  margin-top: 180px;
+}
+
+@media (max-width: 768px) {
+  .app-body {
+    padding: 1rem;
+  }
+}
+
+aside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+button {
+  border-radius: 6px;
+}

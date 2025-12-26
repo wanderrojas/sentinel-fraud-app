@@ -1,0 +1,73 @@
+@if(analyzing){
+<div class="process-analyze card grid gap-0 mb-5">
+  <div class="col-12 lg:col-9">
+    <div class="logs-chat p-4" #logsContainer>
+      <div
+        *ngFor="let log of logs"
+        class="log-message"
+        [ngClass]="{
+          'phase-title': log.event === 'phase',
+          'log-detail': log.event === 'info' || log.event === 'success',
+          'log-complete': log.event === 'complete'
+        }"
+        [ngStyle]="{
+          'border-left-color': getLogColor(log.event)
+        }"
+      >
+        <i [class]="getLogIcon(log.event)"></i>
+        <div class="log-text">
+          <div class="message">{{ log.message }}</div>
+          <div class="timestamp">
+            {{ log.timestamp ? (log.timestamp | date : "shortTime") : "" }}
+          </div>
+        </div>
+
+        <div *ngIf="log.active && analyzing" class="inline-typing">
+          <div class="typing-indicator small">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- form -->
+  <div class="col-12 lg:col-3">
+    <p-card header="Datos de la Transacción">
+      <p-dataView [value]="[formValue?.transaction]" layout="list">
+        <ng-template #list let-items>
+          <div *ngFor="let tx of items" class="grid gap-2">
+            <div class="col-12"><b>ID:</b> {{ tx.transaction_id }}</div>
+            <div class="col-12"><b>Cliente:</b> {{ tx.customer_id }}</div>
+            <div class="col-12">
+              <b>Monto:</b> {{ tx.amount }} {{ tx.currency }}
+            </div>
+            <div class="col-12">
+              <b>País:</b> <p-tag value="{{ tx.country }}"></p-tag>
+            </div>
+            <div class="col-12"><b>Dispositivo:</b> {{ tx.device_id }}</div>
+            <div class="col-12"><b>Canal:</b> {{ tx.channel }}</div>
+            <div class="col-12">
+              <b>Fecha:</b> {{ tx.timestamp | date : "medium" }}
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </p-card>
+  </div>
+</div>
+}@else{
+<div class="mb-1 mt-0 flex justify-content-end">
+  <button pButton severity="info" (click)="resetForm()">
+    <i class="pi pi-check" pButtonIcon></i>
+    <span pButtonLabel>Crear nueva transacción</span>
+  </button>
+</div>
+
+} @if (result) {
+<app-transaction-detail
+  [transactionId]="formValue?.transaction?.transaction_id"
+  [activeIndex]="'1'"
+></app-transaction-detail>
+
+}

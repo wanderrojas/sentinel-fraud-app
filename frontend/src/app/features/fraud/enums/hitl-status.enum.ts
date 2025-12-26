@@ -1,0 +1,6 @@
+export enum HITLStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  IN_REVIEW = 'IN_REVIEW',
+}

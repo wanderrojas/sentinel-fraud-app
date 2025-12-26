@@ -1,0 +1,24 @@
+[
+  {
+    "transaction_id": "T-1001",
+    "customer_id": "CU-001",
+    "amount": 1800.0,
+    "currency": "PEN",
+    "country": "PE",
+    "channel": "web",
+    "device_id": "D-01",
+    "timestamp": "2025-12-17T03:15:00",
+    "merchant_id": "M-001"
+  },
+  {
+    "transaction_id": "T-1002",
+    "customer_id": "CU-002",
+    "amount": 9500.0,
+    "currency": "PEN",
+    "country": "PE",
+    "channel": "mobile",
+    "device_id": "D-02",
+    "timestamp": "2025-12-17T23:45:00",
+    "merchant_id": "M-002"
+  }
+]

@@ -1,0 +1,71 @@
+/* body {
+     font-family: Lato, sans-serif; 
+    color: var(--text-color);
+    background-color: #f1f5f9;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.2;
+} */
+
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';
+
+html,
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f1f5f9;
+    min-height: 100%;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+}
+
+.required{
+    color: #ff2d2d;
+}
+
+.shadowx {
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+
+p-card{
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px !important;
+}
+
+
+
+
+/* Asegúrate de que la animación de rotación esté activa */
+.p-select-spinner {
+    animation: spin 1s linear infinite !important;
+    /* Forzar la animación de giro */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.border-header {
+    background-color: #73b8c0 !important;
+    border-color: #73b8c0 !important;
+    height: 6px
+}
+
+
+.p-menu-overlay {
+    z-index: 1300 !important;
+}

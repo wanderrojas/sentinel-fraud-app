@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  height: 64px;
+  /* z-index: 1200; */
+  background: var(--surface-0);
+}
+
+.shadow-header {
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}

@@ -1,0 +1,55 @@
+notepad .gitignore
+```
+
+Contenido:
+```
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+
+# ChromaDB
+chroma/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+database_storage/
+*.db
+*.db-shm
+*.db-wal
+
+# Si existe una DB vieja en la raíz
+fraud_detection.db
+fraud_detection.db-shm
+fraud_detection.db-wal

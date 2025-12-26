@@ -1,0 +1,23 @@
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+:host ::ng-deep .p-menubar {
+    border-radius: 0 !important;
+}
+
+.border-header {
+    background-color: #73b8c0 !important;
+    border-color: #73b8c0 !important;
+    height: 6px
+}
+
+.container-empty{
+    margin-top: 110px !important;
+}

@@ -1,0 +1,29 @@
+# FastAPI
+fastapi[standard]
+uvicorn
+
+# Configuración
+python-dotenv
+pydantic>=2.6
+pydantic-settings>=2.2
+
+# OpenAI + LangChain
+openai>=1.30.0
+langchain>=0.2.0
+langchain-openai>=0.1.8
+
+# Vector DB (SIN sentence-transformers)
+chromadb>=0.5.5
+
+# HTTP utils
+httpx
+
+# Database
+sqlalchemy
+alembic
+
+# Security JWT
+pyjwt
+python-multipart
+bcrypt
+passlib[bcrypt]

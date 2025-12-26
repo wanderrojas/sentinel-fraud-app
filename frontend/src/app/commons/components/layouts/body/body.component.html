@@ -1,0 +1,43 @@
+<!-- <p-toast />
+<p-confirmdialog />
+<div class="app-body">
+  <div class="grid">
+    <div class="col-12 xl:col-10 xl:col-offset-1 mt-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+ -->
+
+<p-toast />
+<p-confirmdialog />
+
+<div class="flex min-h-screen surface-ground">
+  <!-- Sidebar -->
+  <aside
+    *ngIf="sidebarVisible"
+    class="surface-0 shadow-2 p-3"
+    style="width: 260px"
+  >
+    <p-panelMenu [model]="menuItems" [multiple]="false"></p-panelMenu>
+  </aside>
+
+  <!-- Content -->
+  <div class="flex-1 flex flex-column">
+    <!-- Toolbar -->
+    <div class="flex align-items-center gap-2 px-3 py-2 surface-0 shadow-1">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-bars"
+        class="p-button-text"
+        (click)="toggleSidebar()"
+      ></button>
+    </div>
+
+    <!-- Page content -->
+    <main class="flex-1 p-4">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

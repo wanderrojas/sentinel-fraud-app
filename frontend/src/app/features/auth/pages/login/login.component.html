@@ -1,0 +1,56 @@
+<p-toast />
+<div class="login-container">
+  <p-card class="login-card">
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email -->
+      <div class="p-field">
+        <p-floatlabel variant="in">
+          <input
+            pInputText
+            id="in_label"
+            formControlName="username"
+            autocomplete="off"
+          />
+          <label for="in_label">Correo</label>
+        </p-floatlabel>
+        @if(loginForm.get('username')?.invalid &&
+        loginForm.get('username')?.touched){
+        <small class="p-error"> Ingresa un correo válido </small>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="p-field">
+        <p-floatlabel variant="in">
+          <p-password
+            id="password"
+            formControlName="password"
+            feedback="false"
+            [class.p-invalid]="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+          ></p-password>
+          <label for="in_label">Contraseña</label>
+        </p-floatlabel>
+
+        @if(loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.touched){
+        <small class="p-error">
+          La contraseña debe tener al menos 6 caracteres </small
+        >}
+      </div>
+
+      <!-- Botón -->
+      <p-button
+        label="Ingresar"
+        type="submit"
+        class="p-mt-3"
+        [disabled]="loginForm.invalid"
+        styleClass="p-button-success"
+      ></p-button>
+    </form>
+  </p-card>
+</div>

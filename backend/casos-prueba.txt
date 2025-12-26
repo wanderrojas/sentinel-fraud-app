@@ -1,0 +1,66 @@
+Caso 1: Transacción Normal (Debería APROBAR)
+
+{
+  "transaction": {
+    "transaction_id": "T-1004",
+    "customer_id": "CU-001",
+    "amount": 450.00,
+    "currency": "PEN",
+    "country": "PE",
+    "channel": "web",
+    "device_id": "D-01",
+    "timestamp": "2025-12-17T14:30:00",
+    "merchant_id": "M-001"
+  }
+}
+
+Debería dar: "decision": "APPROVE"
+Análisis IA: "Transacción dentro de patrones normales"
+
+-------------------------------------------
+
+Caso 2: Muy Sospechoso (Debería BLOCK)
+{
+  "transaction": {
+    "transaction_id": "T-1005",
+    "customer_id": "CU-001",
+    "amount": 5000.00,
+    "currency": "PEN",
+    "country": "BR",
+    "channel": "mobile",
+    "device_id": "D-99",
+    "timestamp": "2025-12-17T02:30:00",
+    "merchant_id": "M-999"
+  }
+}
+Debería dar: "decision": "BLOCK" (monto altísimo + país diferente + dispositivo nuevo + hora rara)
+Análisis IA: Detectó 4 señales rojas:
+
+Monto 10x mayor
+Horario atípico (madrugada)
+Dispositivo desconocido
+País diferente
+-------------------------------------------
+
+
+Caso 3: Medianamente Sospechoso (Debería CHALLENGE)
+
+{
+  "transaction": {
+    "transaction_id": "T-1006",
+    "customer_id": "CU-002",
+    "amount": 3000.00,
+    "currency": "PEN",
+    "country": "PE",
+    "channel": "mobile",
+    "device_id": "D-02",
+    "timestamp": "2025-12-17T15:00:00",
+    "merchant_id": "M-002"
+  }
+}
+```
+
+**Debería dar**: `"decision": "CHALLENGE"` (monto alto pero en hora normal y dispositivo conocido)
+Análisis IA: "Monto alto pero otros factores normales → validación adicional"
+
+============================================================

@@ -1,0 +1,16 @@
+{
+  "CU-001": {
+    "customer_id": "CU-001",
+    "usual_amount_avg": 500.0,
+    "usual_hours": "08-20",
+    "usual_countries": "PE",
+    "usual_devices": "D-01"
+  },
+  "CU-002": {
+    "customer_id": "CU-002",
+    "usual_amount_avg": 1200.0,
+    "usual_hours": "09-22",
+    "usual_countries": "PE",
+    "usual_devices": "D-02"
+  }
+}

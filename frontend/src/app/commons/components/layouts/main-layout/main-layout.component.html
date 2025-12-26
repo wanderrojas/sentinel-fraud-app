@@ -1,0 +1,37 @@
+<p-toast />
+<p-confirmdialog />
+
+<div class="layout-wrapper" [class.sidebar-hidden]="!sidebarVisible">
+  <!-- Sidebar -->
+  @if (sidebarVisible) {
+  <aside class="layout-sidebar surface-0 shadow-6">
+    <!-- Logo -->
+    <!-- <div> -->
+    <div class="sidebar-header flex align-items-center gap-2 px-3 py-3">
+      <img src="img/logo-sentinel.png" height="50" class="mr-3 logox" alt="" />
+
+      <div>
+        <span class="font-semibold text-lg">Sentinel AI</span>
+        <br /><span class="sub-title-logo"> Multi-Agent Fraud Detection</span>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <p-panelMenu
+      [model]="menuItems"
+      [multiple]="false"
+      class="px-2"
+    ></p-panelMenu>
+  </aside>
+  }
+  <!-- Main -->
+  <div class="layout-main">
+    <!-- Header -->
+    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+
+    <!-- Body -->
+    <main class="layout-content surface-ground">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

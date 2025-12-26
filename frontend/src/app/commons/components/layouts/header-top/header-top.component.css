@@ -1,0 +1,17 @@
+.border-header {
+    background-color: #73b8c0 !important;
+    border-color: #73b8c0 !important;
+    height: 6px
+}
+
+
+.sub-title-logo{
+    font-size: 0.9rem;
+    color: gray;
+    font-weight: 400;
+}
+
+.logox{
+    height: 100px;
+    padding: 8px;
+}

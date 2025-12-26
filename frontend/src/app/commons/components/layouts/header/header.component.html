@@ -1,0 +1,35 @@
+<header
+  class="flex align-items-center justify-content-between px-4 py-3 surface-0 shadow-header"
+>
+  <!-- LEFT: toggle -->
+  <div class="flex align-items-center gap-2">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-bars"
+      class="p-button-text"
+      (click)="onToggleSidebar($event)"
+    ></button>
+  </div>
+
+  <!-- RIGHT: user -->
+  <div class="flex align-items-center gap-2">
+    <span class="hidden md:block font-medium">
+      {{ usuario.nombreUsuario }}
+    </span>
+
+    <p-avatar
+      image="https://ui-avatars.com/api/?name={{ usuario.nombreUsuario }}"
+      shape="circle"
+      class="cursor-pointer"
+      (click)="onAvatarClick($event, menu)"
+    ></p-avatar>
+
+    <p-menu
+      #menu
+      [popup]="true"
+      [model]="userMenuItems"
+      appendTo="body"
+    ></p-menu>
+  </div>
+</header>

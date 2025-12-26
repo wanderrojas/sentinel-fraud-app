@@ -1,0 +1,235 @@
+<div class="grid">
+  <div class="col-12 justify-content-between flex">
+    <h2 class="text-3xl font-bold mb-4">
+      <p-avatar
+        image="https://cdn-icons-png.flaticon.com/512/438/438036.png
+"
+      />
+      {{ titleTransaction }}
+    </h2>
+  </div>
+  <!-- Formulario -->
+  <div class="col-12 form-analyze" [class.hidden]="startAnalyze">
+    <div class="card">
+      <p-button
+        label="Generar Datos Random"
+        icon="pi pi-refresh"
+        pTooltip="Genera data aleatoria para realizar el análisis"
+        severity="secondary"
+        type="button"
+        (onClick)="generateRandomData()"
+      >
+      </p-button>
+
+      <!--  <h2 class="text-3xl font-bold mb-4">🔍 Analizar Transacción</h2> -->
+      <div class="p-4 mt-2 bg-white">
+        <form [formGroup]="transactionForm" (ngSubmit)="onSubmitted()">
+          <div class="grid grid-cols-4 gap-4">
+            <!-- Transaction ID -->
+            <div class="col-span-1">
+              <label for="transaction_id" class="block font-semibold mb-2"
+                >ID Transacción</label
+              >
+              <input
+                pInputText
+                id="transaction_id"
+                readonly
+                formControlName="transaction_id"
+                placeholder="T-001"
+                class="w-full"
+              />
+            </div>
+
+            <!-- Device ID -->
+            <div class="col-span-1">
+              <label for="device_id" class="block font-semibold mb-2"
+                >ID Dispositivo</label
+              >
+              <input
+                pInputText
+                id="device_id"
+                formControlName="device_id"
+                placeholder="D-01"
+                class="w-full"
+              />
+              @if (isInvalid('device_id')) {
+              <p-message severity="error" size="small" variant="simple"
+                >El Dispositivo es obligatorio.</p-message
+              >
+              }
+            </div>
+
+            <!-- Amount -->
+            <div class="col-span-1">
+              <label for="amount" class="block font-semibold mb-2">Monto</label>
+              <p-inputNumber
+                id="amount"
+                formControlName="amount"
+                mode="currency"
+                [invalid]="isInvalid('amount')"
+                currency="PEN"
+                locale="es-PE"
+                class="w-full"
+              />
+
+              @if (isInvalid('amount')) {
+              <p-message severity="error" size="small" variant="simple"
+                >El monto debe ser mayor a cero(0).</p-message
+              >
+              }
+            </div>
+
+            <!-- Timestamp -->
+            <div class="col-span-1">
+              <label for="timestamp" class="block font-semibold mb-2"
+                >Fecha/Hora</label
+              >
+              <p-datepicker
+                inputId="timestamp"
+                formControlName="timestamp"
+                [showTime]="true"
+              />
+              @if (isInvalid('timestamp')) {
+              <p-message severity="error" size="small" variant="simple"
+                >Seleccione una fecha y hora.</p-message
+              >
+              }
+            </div>
+
+            <!-- Country -->
+            <div class="col-span-1">
+              <label for="country" class="block font-semibold mb-2">País</label>
+              <p-select
+                [options]="countries"
+                id="country"
+                [filter]="true"
+                filterBy="name"
+                formControlName="country"
+                optionLabel="name"
+                optionValue="code"
+                [invalid]="isInvalid('country')"
+                placeholder="Seleccionar país"
+                class="w-full"
+              />
+              @if (isInvalid('country')) {
+              <p-message severity="error" size="small" variant="simple"
+                >Seleccione el pais de la transacción.</p-message
+              >
+              }
+            </div>
+
+            <!-- Channel -->
+            <div class="col-span-1">
+              <label for="channel" class="block font-semibold mb-2"
+                >Canal</label
+              >
+              <p-select
+                [options]="channels"
+                id="channel"
+                [filter]="true"
+                filterBy="name"
+                formControlName="channel"
+                optionValue="code"
+                [invalid]="isInvalid('channel')"
+                optionLabel="name"
+                placeholder="Seleccionar canal"
+                class="w-full"
+              />
+              @if (isInvalid('channel')) {
+              <p-message severity="error" size="small" variant="simple"
+                >Seleccione el canal de la transacción.</p-message
+              >
+              }
+            </div>
+
+            <!-- Customer -->
+            <div class="col-span-1">
+              <label for="customer_id" class="block font-semibold mb-2"
+                >Cliente</label
+              >
+              <p-select
+                [options]="customers"
+                id="customer_id"
+                [filter]="true"
+                filterBy="fullName"
+                [invalid]="isInvalid('customer_id')"
+                formControlName="customer_id"
+                optionLabel="fullName"
+                optionValue="customer_id"
+                placeholder="Seleccionar cliente"
+                class="w-full"
+              />
+              @if (isInvalid('customer_id')) {
+              <p-message severity="error" size="small" variant="simple"
+                >Seleccione un cliente.</p-message
+              >
+              }
+            </div>
+
+            <!-- Merchant -->
+            <div class="col-span-1">
+              <label for="merchant_id" class="block font-semibold mb-2"
+                >Comercio</label
+              >
+              <p-select
+                [options]="merchants"
+                id="merchant_id"
+                [filter]="true"
+                [invalid]="isInvalid('merchant_id')"
+                filterBy="nombre"
+                formControlName="merchant_id"
+                optionValue="merchant_id"
+                placeholder="Seleccionar un comercio"
+                class="w-full"
+              >
+                <ng-template let-merchant pTemplate="item">
+                  {{ merchant.nombre }} ({{ merchant.categoria }},
+                  {{ merchant.pais }})
+                </ng-template>
+
+                <ng-template let-merchant pTemplate="selectedItem">
+                  {{ merchant.nombre }} ({{ merchant.categoria }},
+                  {{ merchant.pais }})
+                </ng-template>
+              </p-select>
+
+              @if (isInvalid('merchant_id')) {
+              <p-message severity="error" size="small" variant="simple"
+                >Seleccione un comercio.</p-message
+              >
+              }
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex mt-4 border-top-1 w-full pt-4 border-cyan-50">
+            <p-button
+              label="Analizar"
+              icon="pi pi-search"
+              type="submit"
+            ></p-button>
+
+            <p-button
+              class="ml-6"
+              label="Limpiar"
+              icon="pi pi-times"
+              severity="secondary"
+              type="button"
+              (onClick)="resetForm()"
+            ></p-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-analyze" [class.visible]="startAnalyze">
+    @if(startAnalyze){
+    <app-transaction-result
+      [formValue]="requestDataAnalyze"
+      [analyzing]="startAnalyze"
+      (responseAnalyze)="onResponseAnalyze($event)"
+    ></app-transaction-result
+    >}
+  </div>
+</div>

@@ -1,0 +1,57 @@
+/* Contenedor centrado vertical y horizontal */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Tarjeta del login */
+.login-card {
+    width: 400px;
+    max-width: 90%;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: #ffffffcc;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover de la tarjeta */
+.login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.p-field {
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: block;
+    color: #555;
+}
+
+.p-error {
+    font-size: 0.8rem;
+    color: #f44336;
+}
+
+@media (max-width: 500px) {
+    .login-card {
+        width: 90%;
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,195 @@
+<div class="grid">
+  <!-- Header -->
+  <!-- <div class="col-12">
+    <div class="card">
+      <h1 class="text-4xl font-bold mb-2">🛡️ BCP Fraud Guardian</h1>
+      <p class="text-color-secondary">
+        Sistema Multi-Agente de Detección de Fraude
+      </p>
+    </div>
+  </div> -->
+
+  <!-- Estadísticas Generales -->
+  <div class="col-12 lg:col-3 md:col-6">
+    <div class="card bg-blue-500 text-white border-round card-resume">
+      <div class="flex align-items-center justify-content-between mb-3 p-3">
+        <div>
+          <span class="block text-white-alpha-90 font-medium mb-2"
+            >Total Transacciones</span
+          >
+          <div class="text-4xl font-bold">
+            {{ stats?.total_transactions || 0 }}
+          </div>
+        </div>
+        <i class="pi pi-credit-card text-5xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-3 md:col-6">
+    <div class="card bg-green-500 text-white border-round card-resume">
+      <div class="flex align-items-center justify-content-between mb-3 p-3">
+        <div>
+          <span class="block text-white-alpha-90 font-medium mb-2"
+            >Aprobadas</span
+          >
+          <div class="text-4xl font-bold">
+            {{ stats?.decisions_by_type?.APPROVE || 0 }}
+          </div>
+        </div>
+        <i class="pi pi-check-circle text-5xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-3 md:col-6">
+    <div class="card bg-red-500 text-white border-round card-resume">
+      <div class="flex align-items-center justify-content-between mb-3 p-3">
+        <div>
+          <span class="block text-white-alpha-90 font-medium mb-2"
+            >Bloqueadas</span
+          >
+          <div class="text-4xl font-bold">
+            {{ stats?.decisions_by_type?.BLOCK || 0 }}
+          </div>
+        </div>
+        <i class="pi pi-ban text-5xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-3 md:col-6">
+    <div class="card bg-orange-500 text-white border-round card-resume">
+      <div class="flex align-items-center justify-content-between mb-3 p-3">
+        <div>
+          <span class="block text-white-alpha-90 font-medium mb-2"
+            >Casos HITL</span
+          >
+          <div class="text-4xl font-bold">
+            {{ stats?.hitl_cases?.pending || 0 }}
+          </div>
+        </div>
+        <i class="pi pi-users text-5xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfico de Decisiones -->
+  <div class="col-12 lg:col-8">
+    <div class="card">
+      <h3 class="text-2xl font-bold mb-4">📊 Distribución de Decisiones</h3>
+      <p-chart
+        type="doughnut"
+        [data]="chartData"
+        [options]="chartOptions"
+      ></p-chart>
+    </div>
+  </div>
+
+  <!-- Agentes Activos -->
+  <div class="col-12 lg:col-4">
+    <div class="card">
+      <h3 class="text-2xl font-bold mb-4">🤖 Agentes Activos</h3>
+      <div class="flex flex-column gap-3">
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-eye text-blue-500"></i>
+            <span class="font-semibold">Transaction Context</span>
+          </div>
+        </div>
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-chart-line text-green-500"></i>
+            <span class="font-semibold">Behavioral Pattern</span>
+          </div>
+        </div>
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-book text-purple-500"></i>
+            <span class="font-semibold">Policy RAG</span>
+          </div>
+        </div>
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-shield text-orange-500"></i>
+            <span class="font-semibold">Threat Intel</span>
+          </div>
+        </div>
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-database text-cyan-500"></i>
+            <span class="font-semibold">Evidence Aggregation</span>
+          </div>
+        </div>
+        <div class="p-3 surface-100 border-round">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-comments text-pink-500"></i>
+            <span class="font-semibold">Debate Agents</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Últimas Transacciones -->
+  <div class="col-12">
+    <div class="card">
+      <h3 class="text-2xl font-bold mb-4">📜 Últimas Transacciones</h3>
+      <p-table
+        [value]="recentTransactions"
+        [loading]="loading"
+        responsiveLayout="scroll"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rows]="5"
+        [paginator]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="transaction_id">
+              ID Transacción <p-sortIcon field="transaction_id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="decision">
+              Decisión <p-sortIcon field="decision"></p-sortIcon>
+            </th>
+            <th pSortableColumn="confidence">
+              Confianza <p-sortIcon field="confidence"></p-sortIcon>
+            </th>
+            <th pSortableColumn="risk_score">
+              Risk Score <p-sortIcon field="risk_score"></p-sortIcon>
+            </th>
+            <th pSortableColumn="created_at">
+              Fecha <p-sortIcon field="created_at"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-transaction>
+          <tr>
+            <td>
+              <span class="font-monospace">{{
+                transaction.transaction_id
+              }}</span>
+            </td>
+            <td>
+              <p-tag
+                [value]="transaction.decision"
+                [severity]="getDecisionSeverity(transaction.decision)"
+              >
+              </p-tag>
+            </td>
+            <td>{{ (transaction.confidence * 100).toFixed(0) }}%</td>
+            <td>
+              <p-progressBar
+                [value]="transaction.risk_score * 100"
+                [showValue]="false"
+                [style]="{ height: '8px' }"
+              >
+              </p-progressBar>
+            </td>
+            <td>{{ transaction.created_at | date : "short" }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

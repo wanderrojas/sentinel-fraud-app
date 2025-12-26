@@ -1,0 +1,6 @@
+export enum DecisionType {
+  APPROVE = 'APPROVE',
+  CHALLENGE = 'CHALLENGE',
+  BLOCK = 'BLOCK',
+  ESCALATE_TO_HUMAN = 'ESCALATE_TO_HUMAN',
+}

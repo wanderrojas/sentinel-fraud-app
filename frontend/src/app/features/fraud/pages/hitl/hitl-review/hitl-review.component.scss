@@ -1,0 +1,17 @@
+.header-transaccion {
+  background-color: #e3edfd;
+  color: rgb(44, 42, 42);
+  margin-bottom: 10px;
+}
+
+/* Opcional: hover para más efecto */
+.header-transaccion:hover,
+.header-caso:hover {
+  opacity: 0.9;
+}
+
+.action-decision {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  background-color: #f9f9ff;
+}

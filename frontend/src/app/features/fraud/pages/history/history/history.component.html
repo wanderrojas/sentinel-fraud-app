@@ -1,0 +1,175 @@
+<div class="card">
+  <h2 class="text-3xl font-bold mb-4">📊 Historial de Transacciones</h2>
+
+  <!-- Filtros -->
+  <div class="flex gap-3 mb-4">
+    <!--  <span class="p-input-icon-left flex-1">
+      <i class="pi pi-search"></i>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="filterTransactions()"
+        placeholder="Buscar por ID transacción o cliente"
+        class="w-full"
+      />
+    </span> -->
+
+    <p-select
+      [options]="customers"
+      class="w-15rem"
+      [(ngModel)]="filterOptions.customer_id"
+      optionLabel="fullName"
+      placeholder="Selecciona un cliente"
+      optionValue="customer_id"
+      class="w-full md:w-56"
+      [showClear]="true"
+    />
+
+    <p-select
+      [options]="decisionOptions"
+      class="w-15rem"
+      [(ngModel)]="filterOptions.decision"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Selecciona un estado"
+      [showClear]="true"
+      class="w-full md:w-56"
+    />
+    <p-button
+      label="Filtrar"
+      icon="pi pi-search"
+      severity="secondary"
+      (onClick)="loadTransactions()"
+    >
+    </p-button>
+    <p-button
+      label="Exportar"
+      icon="pi pi-download"
+      severity="secondary"
+      (onClick)="exportData()"
+    >
+    </p-button>
+  </div>
+
+  <!-- Tabla -->
+  <p-table
+    [value]="transactions"
+    [loading]="loading"
+    [paginator]="true"
+    [rows]="20"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} transacciones"
+    responsiveLayout="scroll"
+    sortField="created_at"
+    [sortOrder]="-1"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="transaction_id">
+          ID Transacción <p-sortIcon field="transaction_id"></p-sortIcon>
+        </th>
+        <th>Cliente</th>
+        <th pSortableColumn="decision">
+          Decisión <p-sortIcon field="decision"></p-sortIcon>
+        </th>
+        <th pSortableColumn="confidence">
+          Confianza <p-sortIcon field="confidence"></p-sortIcon>
+        </th>
+        <th pSortableColumn="risk_score">
+          Risk Score <p-sortIcon field="risk_score"></p-sortIcon>
+        </th>
+        <th pSortableColumn="processing_time_ms">
+          Tiempo (s) <p-sortIcon field="processing_time_ms"></p-sortIcon>
+        </th>
+        <th pSortableColumn="created_at">
+          Fecha <p-sortIcon field="created_at"></p-sortIcon>
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-transaction>
+      <tr>
+        <td>
+          <span class="font-monospace">{{ transaction.transaction_id }}</span>
+        </td>
+        <td>
+          {{ transaction?.customer?.nombre }}
+          {{ transaction?.customer?.apellido }}
+        </td>
+
+        <td>
+          <p-tag
+            [value]="transaction.decision"
+            [severity]="getDecisionSeverity(transaction.decision)"
+          >
+          </p-tag>
+        </td>
+        <td>
+          <div class="flex align-items-center gap-2">
+            <p-progressBar
+              [value]="transaction.confidence * 100"
+              [showValue]="false"
+              [style]="{ height: '6px', width: '60px' }"
+            >
+            </p-progressBar>
+            <span>{{ (transaction.confidence * 100).toFixed(0) }}%</span>
+          </div>
+        </td>
+        <td>
+          <div class="flex align-items-center gap-2">
+            <p-progressBar
+              [value]="transaction.risk_score * 100"
+              [showValue]="false"
+              [style]="{ height: '6px', width: '60px' }"
+            >
+            </p-progressBar>
+            <span>{{ (transaction.risk_score * 100).toFixed(0) }}%</span>
+          </div>
+        </td>
+        <td>{{ (transaction.processing_time_ms / 1000).toFixed(2) }}</td>
+        <td>{{ transaction.created_at | date : "medium" }}</td>
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            severity="info"
+            size="small"
+            [rounded]="true"
+            (onClick)="viewDetails(transaction)"
+            pTooltip="Ver detalles"
+          >
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center p-5">
+          <i class="pi pi-inbox text-4xl text-color-secondary mb-3"></i>
+          <p class="text-xl text-color-secondary">
+            No hay transacciones disponibles
+          </p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Dialog para revisar caso -->
+<p-dialog
+  [(visible)]="showReviewDialog"
+  [header]="'Transacción: ' + transactionId"
+  [modal]="true"
+  [focusOnShow]="false"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '90vw', height: '90vh' }"
+  [contentStyle]="{ height: '100%' }"
+  [maximizable]="true"
+>
+  <app-transaction-detail
+    [transactionId]="transactionId"
+    [activeIndex]="'1'"
+  ></app-transaction-detail>
+</p-dialog>

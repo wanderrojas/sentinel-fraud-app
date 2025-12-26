@@ -1,0 +1,57 @@
+:host {
+    text-align: center;
+    color: #fafbfc;
+    font-weight: 600;
+}
+
+/* LOADING */
+.loading {
+    top: 50%;
+    left: 50%;
+    margin-bottom: 10px;
+}
+
+.loading-bar {
+    display: inline-block;
+    margin-left: 3px;
+    width: 4px;
+    height: 18px;
+    border-radius: 4px;
+    animation: loading 1s ease-in-out infinite;
+}
+
+.loading-bar:nth-child(1) {
+    background-color: #11aab0;
+    animation-delay: 0;
+}
+
+.loading-bar:nth-child(2) {
+    background-color: #006ea3;
+    animation-delay: 0.09s;
+}
+
+.loading-bar:nth-child(3) {
+    background-color: #d96e67;
+    animation-delay: 0.18s;
+}
+
+.loading-bar:nth-child(4) {
+    background-color: #f7b835;
+    animation-delay: 0.27s;
+}
+
+@keyframes loading {
+    0% {
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(1, 2.2);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* /LOADING */

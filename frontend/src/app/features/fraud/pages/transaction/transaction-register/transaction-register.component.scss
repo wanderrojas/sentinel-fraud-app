@@ -1,0 +1,25 @@
+.form-analyze,
+.result-analyze {
+  transition: all 0.5s ease-in-out; // transición suave para todos los cambios
+}
+
+.form-analyze.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0; // opcional si quieres que desaparezca el espacio
+  margin: 0;
+}
+
+.result-analyze {
+  opacity: 0;
+  transform: translateY(-20px);
+  height: 0;
+  overflow: hidden;
+}
+
+.result-analyze.visible {
+  opacity: 1;
+  transform: translateY(0);
+  height: auto;
+}

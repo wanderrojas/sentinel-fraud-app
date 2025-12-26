@@ -1,0 +1,173 @@
+<div class="card">
+  <h2 class="text-3xl font-bold mb-4">👤 Cola Human-in-the-Loop</h2>
+
+  <!-- Filtros y Actions -->
+  <div class="flex justify-content-between align-items-center mb-4">
+    <div class="flex gap-2">
+      <p-button
+        label="Pendientes"
+        severity="info"
+        icon="pi pi-clock"
+        [outlined]="statusFilter !== 'PENDING'"
+        (onClick)="filterByStatus('PENDING')"
+      >
+      </p-button>
+      <p-button
+        label="Aprobados"
+        icon="pi pi-check"
+        severity="success"
+        [outlined]="statusFilter !== 'APPROVED'"
+        (onClick)="filterByStatus('APPROVED')"
+      >
+      </p-button>
+      <p-button
+        label="Rechazados"
+        icon="pi pi-times"
+        severity="danger"
+        [outlined]="statusFilter !== 'REJECTED'"
+        (onClick)="filterByStatus('REJECTED')"
+      >
+      </p-button>
+      <p-button
+        label="Todos"
+        icon="pi pi-list"
+        severity="info"
+        [outlined]="statusFilter !== null"
+        (onClick)="filterByStatus(null)"
+      >
+      </p-button>
+    </div>
+
+    <p-button
+      label="Refrescar"
+      icon="pi pi-refresh"
+      severity="secondary"
+      (onClick)="loadCases()"
+    >
+    </p-button>
+  </div>
+
+  <!-- Tabla de Casos -->
+  <p-table
+    #dt
+    [value]="cases"
+    [loading]="loading"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="case_id">
+          Case ID
+          <p-sortIcon field="case_id"></p-sortIcon>
+        </th>
+        <th>Transaction ID</th>
+        <th pSortableColumn="decision_recommendation">
+          Recomendación
+          <p-sortIcon field="decision_recommendation"></p-sortIcon>
+        </th>
+        <th pSortableColumn="confidence">
+          Confianza <p-sortIcon field="confidence"></p-sortIcon>
+        </th>
+        <th>Estado</th>
+        <th pSortableColumn="created_at">
+          Creado <p-sortIcon field="created_at"></p-sortIcon>
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-case>
+      <tr>
+        <td>
+          <span class="font-monospace font-bold">{{ case.case_id }}</span>
+        </td>
+        <td>
+          <span class="font-monospace">{{
+            case.transaction.transaction_id
+          }}</span>
+        </td>
+        <td>
+          <p-tag
+            [value]="case.decision_recommendation"
+            [severity]="getDecisionSeverity(case.decision_recommendation)"
+          >
+          </p-tag>
+        </td>
+        <td>{{ (case.confidence * 100).toFixed(0) }}%</td>
+        <td>
+          <p-tag
+            [value]="case.status"
+            [severity]="getStatusSeverity(case.status)"
+          >
+          </p-tag>
+        </td>
+        <td>{{ case.created_at | date : "short" }}</td>
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-eye"
+              severity="info"
+              size="small"
+              [rounded]="true"
+              (onClick)="viewCase(case)"
+              pTooltip="Ver detalles"
+            >
+            </p-button>
+            <p-button
+              icon="pi pi-check"
+              severity="success"
+              size="small"
+              [rounded]="true"
+              *ngIf="case.status === 'PENDING'"
+              (onClick)="reviewCase(case, 'APPROVE')"
+              pTooltip="Aprobar"
+            >
+            </p-button>
+            <p-button
+              icon="pi pi-times"
+              severity="danger"
+              size="small"
+              [rounded]="true"
+              *ngIf="case.status === 'PENDING'"
+              (onClick)="reviewCase(case, 'BLOCK')"
+              pTooltip="Rechazar"
+            >
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center p-5">
+          <i class="pi pi-inbox text-4xl text-color-secondary mb-3"></i>
+          <p class="text-xl text-color-secondary">
+            No hay casos {{ statusFilter ? "con ese estado" : "disponibles" }}
+          </p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Dialog para revisar caso -->
+<p-dialog
+  [(visible)]="showReviewDialog"
+  [header]="'Revisar Caso: ' + selectedCase?.case_id"
+  [modal]="true"
+  [focusOnShow]="false"
+  (onHide)="onCloseReviewDialog()"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '90vw', height: '90vh' }"
+  [contentStyle]="{ height: '100%' }"
+  [maximizable]="true"
+>
+  <app-hitl-review
+    (responseReview)="handleResponseHitlReview($event)"
+    [selectedCase]="selectedCase"
+    [reviewDecision]="reviewDecision"
+  ></app-hitl-review>
+</p-dialog>
